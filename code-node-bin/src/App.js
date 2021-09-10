@@ -1,38 +1,21 @@
-import { useState, useEffect } from 'react'
+import { Switch, Route } from 'react-router-dom'
+import Home from './Home'
+import New from './New'
+import Document from './Document'
 
-function App () {
-  const [code, setCode] = useState('')
-  const [lineNumbers, setLineNumbers] = useState([])
-
-  useEffect(() => {
-    async function getCode () {
-      const lines = []
-      const response = await window.fetch('http://localhost:5000')
-      const codeData = await response.json()
-      setCode(codeData.code)
-      for (let i = 1; i <= codeData.code.split('\n').length; i++) {
-        lines.push(i)
-      }
-      setLineNumbers(lines)
-    }
-
-    getCode()
-  }, [])
-
+function App() {
   return (
-    <div className='wrapper'>
-      <div className='line-numbers'>
-        {lineNumbers.map((line, i) => (
-          <div key={i}>{line}</div>
-        ))}
-      </div>
-
-      <pre>
-        <code id='code-display' className='language-plaintext'>
-          {code}
-        </code>
-      </pre>
-    </div>
+    <Switch>
+      <Route exact path="/">
+        <Home />
+      </Route>
+      <Route exact path="/new">
+        <New />
+      </Route>
+      <Route exact path="/:id">
+        <Document />
+      </Route>
+    </Switch>
   )
 }
 
